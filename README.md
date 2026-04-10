@@ -99,8 +99,10 @@ project/
 ├── home.html
 ├── about.html
 ├── form.html
-├── style2.css
-├── logo.png
+│
+├── static/
+│   ├── style2.css
+│   └── logo.png
 ```
 
 ---
