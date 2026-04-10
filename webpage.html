@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webpage</title>
+    <link rel="stylesheet" href="/static/style2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="page">
+    <div class="main">
+        <div class="logo">
+            <img src="/static/logo.png" alt="logo_name" >
+        </div>
+        <ul class="menu">
+            <li> <a href="home.html" target="contentFrame"> Home</a></li>
+            <li> <a href="about.html" target="contentFrame">About</a> </li>
+            <li> <a href="form.html" target="contentFrame"> Login</a></li>
+        </ul>
+    </div>
+        <div class="analysis">
+                Graphs will appear here
+        </div>
+        <div class="main_area">
+            <iframe name="contentFrame" src="home.html" ></iframe>
+        </div>
+        <a href="#chatbox" class="chatbot-btn">💬</a>
+        <div id="chatbox" class="chat-popup">
+            <div class="chat-header">
+                Chatbot
+                <a href="#" class="close-btn">✖</a>
+            </div>
+            
+            <div class="chat-body">
+                <p>Hello! How can I help you?</p>
+            </div>
+        
+            <div class="chat-footer">
+                <input type="text" id="input" placeholder="Type a message..." onkeypress="if(event.key=='Enter') sendMessage()">
+                <button id="send" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+        <script>
+       function sendMessage(){
+       const input=document.getElementById('input');
+       const chat=document.querySelector('.chat-body');
+       const message=input.value.trim();
+       if(!message) return;
+       chat.innerHTML+='<div class="user">You: ' +message + '</div>';
+       input.value=''
+       
+       //send to flask backend
+       
+       fetch('/chat',{
+           method:'POST',
+           headers:{'Content-Type':'application/json'},
+           body: JSON.stringify({message:message})
+        })
+        .then(response => response.json())
+        .then(data => {
+            chat.innerHTML+='<div class="bot">Bot: ' + data.response + '</div>';
+            chat.scrollTop=chat.scrollHeight;
+        })
+    }
+
+        </script>
+  
+</div>
+</body>
+</html>
